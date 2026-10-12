@@ -1,18 +1,32 @@
+# GitHub Actions reads every .yml file in .github/workflows/ and runs it
+# when one of its triggers (`on:`) fires. No file here = no CI, nothing happens.
+# This one is our CI (continuous integration): automated checks on every change.
+
+# Label shown in the "Actions" tab and next to PRs.
 name: CI
 
+# Triggers: when should this workflow run?
 on:
   pull_request:
   push:
     branches: [main]
 
+# A workflow is made of jobs; jobs run in parallel unless told otherwise.
 jobs:
   check:
+    # Each run gets a fresh Linux VM on GitHub's servers, thrown away afterwards.
     runs-on: ubuntu-latest
+    # Steps run in order; the first failing step turns the job (and the PR check) red.
     steps:
+      # Download this repo's code onto the VM (it starts empty).
       - uses: actions/checkout@v4
+      # Install Python 3.9 (same version as local development).
       - uses: actions/setup-python@v5
         with:
           python-version: "3.9"
+      # The VM has no tools yet: install the linter and test runner.
       - run: python -m pip install pytest ruff
+      # Lint: style problems and likely bugs.
       - run: ruff check .
+      # Run the tests in tests/.
       - run: pytest
