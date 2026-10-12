@@ -1,0 +1,16 @@
+[project]
+name = "todo"
+version = "0.1.0"
+description = "Small to-do CLI used as a pretext to practice a team Git workflow."
+requires-python = ">=3.9"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
